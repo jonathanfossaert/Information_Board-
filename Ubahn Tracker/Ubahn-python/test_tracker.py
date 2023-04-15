@@ -97,9 +97,10 @@ def label_print(posi):
 """""  
 
 
-
+#Fraunhofhofer ID : de:09162:150
 def tracking():
-    test = requests.get("https://www.mvg.de/api/fahrinfo/departure/de:09162:520?footway=0")
+    test = requests.get("https://www.mvg.de/api/fahrinfo/departure/de:09162:520?footway=0") # NORDFREIDHOF 
+   # test = requests.get("https://www.mvg.de/api/fahrinfo/departure/de:09162:150?footway=0") #Fraunhofer
     info = json.loads(test.content)
     position = 0
     for dep in info["departures"]:
