@@ -12,15 +12,26 @@ from tkinter import *
 
 master = Tk()
 master.title('Ubahn Tracker')
-master.geometry("500x600")
-master.config(bg="midnight blue")
+master.geometry("1200x1000")
+master.config(bg="white")
 
-direction0 = Label(master,font=("Calibri",25),bg="midnight blue",fg="white")
-direction1 = Label(master,font=("Calibri",25),bg="midnight blue",fg="white")
-direction2 = Label(master,font=("Calibri",25),bg="midnight blue",fg="white")
-direction3 = Label(master,font=("Calibri",25),bg="midnight blue",fg="white")
-direction4 = Label(master,font=("Calibri",25),bg="midnight blue",fg="white")
-direction5 = Label(master,font=("Calibri",25),bg="midnight blue",fg="white")
+textcolor = "black"
+textbackground = "white"
+fontsize = 40
+
+
+direction0 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+direction1 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+direction2 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+direction3 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+direction4 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+direction5 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+#Fürs Wetter 
+weather0 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+weather1 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+weather2 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+weather3 = Label(master,font=("Calibri",fontsize),bg=textbackground,fg=textcolor)
+
 
 direction0.grid(row=0,column=0)
 direction1.grid(row=1,column=0)
@@ -28,6 +39,16 @@ direction2.grid(row=2,column=0)
 direction3.grid(row=3,column=0)
 direction4.grid(row=4,column=0)
 direction5.grid(row=5,column=0)
+
+#Wetter 
+weather0.grid(row=1,column=1)
+weather0.config(text="Aktuelles Wetter")
+weather1.grid(row=2,column=1)
+weather2.grid(row=3,column=1)
+weather3.grid(row=4,column=1)
+
+
+
 
 """""
 time0 = Label(master,font=("Calibri",25),bg="white",fg="black")
@@ -37,6 +58,16 @@ time3 = Label(master,font=("Calibri",25),bg="white",fg="black")
 time4 = Label(master,font=("Calibri",25),bg="white",fg="black")
 time5 = Label(master,font=("Calibri",25),bg="white",fg="black")
 """""
+
+
+#Wetter Api 
+api_key = "39e82cd552399310ff3d65fdcab7af71"
+lat = "48,17"
+lon = "11.59"
+
+# API-Anfrage senden
+url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}"
+
 
 #test = requests.get("https://www.mvg.de/api/fahrinfo/departure/de:09162:520?footway=0")
 #info = json.loads(test.content)
@@ -148,6 +179,19 @@ def tracking():
                     #print("MitVerspätung:   \t"+ timeconverter_delay(dep) + "\n")
                     #print(position)
                     position=position +1 
+
+    response = requests.get(url)
+    data = json.loads(response.text)
+
+    temp = str(round(data["main"]["temp"]- 273.15,1))
+    min_temp = str(round(data["main"]["temp_min"]- 273.15,1))
+    wetter = str(data["weather"][0]["main"])
+    #wetter_desc = data["weather"][0]["description"] 
+    temp_text = "Tempera"
+    weather1.config(text="Temperatur: \n"+temp)
+    weather2.config(text="Min Temperatur: \n"+min_temp)
+    weather3.config(text="Wetterlage: \n"+wetter)
+    
         
 
             
